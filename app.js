@@ -77,11 +77,8 @@
           initEvents: function initEvents(){
 
             $('[data-js="form-register"]').on('submit', this.handleSubmit );
-            //automatizar abaixo com um forEach utilizando o id do campo para chamar a validação dele
-            //e passar o Listener para cada
-           // $('[data-js="form-register"]').on('submit', this.formValidation );
+            this.formValidation();
             
-
           },
           handleSubmit: function handleSubmit(e){
             e.preventDefault();
@@ -118,22 +115,18 @@
           return this.readyState === 4 && this.status === 200;
         },
         formValidation: function formValidation(){
-          var regexPlate = /[a-zA-Z]{3}-[\d]{4}$/g
+
+          $('[data-js="year"]').get().addEventListener('input', function(e){
+            $('[data-js="year"]').get().value = $('[data-js="year"]').get().value.replace(/\D/g, '');
+          });
+         
+          $('[data-js="plate"]').get().addEventListener('blur', function(){
+            var regexPlate = /[a-zA-Z]{3}-[\d]{4}$/g;
                if(!regexPlate.test($('[data-js="plate"]').get().value)){
                  alert('insira uma placa válida');
-                 return false;
                }
-               return true;
-         /*return {
-            year:  $('[data-js="year"]').get().value = $('[data-js="year"]').get().value.replace(/\D/g, ''),
-            plate: function(){
-              var regexPlate = /[a-zA-Z]{3}-[\d]{4}/g
-               if(!regexPlate.test($('[data-js="plate"]').get().value))
-                 return alert('insira uma placa válida');
-            },
-            brand: $('[data-js="brand-model"]').get().value,
-            color: $('[data-js="color"]').get().value
-          };*/
+          });
+
         }
 
  
