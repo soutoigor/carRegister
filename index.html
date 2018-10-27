@@ -32,33 +32,48 @@
     <div class="container">
         <div class="row " style='margin-top: 7%;'>
             <div class="col-lg-6 col-sm-12">
-                <form data-js="form-register" class=" border text-center border-light rounded ">
+                <form data-js="form-register" class="needs-validation border text-center border-light rounded" novalidate>
                     <h1>Cadastre seu carro</h1>
 
                     <div class="form-group">
                         <label for="image">URL imagem do Carro</label>
-                        <input type="url" data-js="image" class="form-control" id="image" aria-describedby=""
-                            placeholder="">
+                        <input type="url" data-js="image" id="image" class="form-control" id="image" aria-describedby=""
+                            placeholder="" required>
+                            <div class="invalid-feedback">
+                                Insira uma imagem do carro!
+                            </div>
                     </div>
                     <div class="form-group">
                         <label for="brand-model">Modelo / Marca</label>
                         <input type="text" data-js="brand-model" class="form-control" id="brand-model" aria-describedby=""
-                            placeholder="">
+                            placeholder="" required>
+                            <div class="invalid-feedback">
+                                Insira a marca/modelo do carro!
+                            </div>
                     </div>
                     <div class="form-group">
                         <label for="year">Ano</label>
-                        <input type="text" data-js="year" class="form-control" id="year" aria-describedby=""
-                            placeholder="">
+                        <input type="number"  data-js="year" class="form-control" id="year" aria-describedby=""
+                            placeholder="" required>
+                            <div class="invalid-feedback">
+                                Insira o ano do carro!
+                            </div>
                     </div>
                     <div class="form-group">
                         <label for="plate">Placa</label>
                         <input type="text" data-js="plate" class="form-control" id="plate" aria-describedby=""
-                            placeholder="">
+                            placeholder="" required>
+                            <div class="invalid-feedback">
+                                Insira a placa do carro!
+                            </div>
                     </div>
                     <div class="form-group">
                         <label for="color">Cor</label>
                         <input type="text" data-js="color" class="form-control" id="color" aria-describedby=""
-                            placeholder="">
+                            placeholder="" required>
+                            <div class="invalid-feedback">
+                                Insira a cor do carro!
+                            </div>
                     </div>
                     <button type="submit" class="btn btn-block btn-danger">Cadastrar</button>
                 </form>

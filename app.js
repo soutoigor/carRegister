@@ -75,15 +75,15 @@
           return $fragment.appendChild($tr);
           },
           initEvents: function initEvents(){
-
+            if(!this.formValidation())
+              return;
+            
             $('[data-js="form-register"]').on('submit', this.handleSubmit );
-            this.formValidation();
             
           },
           handleSubmit: function handleSubmit(e){
             e.preventDefault();
-            if(!app.formValidation())
-              return;
+            
 
             var $tableCar = $('[data-js="table-car"]').get();
             $tableCar.appendChild(app.createNewCar());
@@ -116,15 +116,23 @@
         },
         formValidation: function formValidation(){
 
+          //  if (form.checkValidity() === false) {
+                  
+          //       }
+                
+
           $('[data-js="year"]').get().addEventListener('input', function(e){
             $('[data-js="year"]').get().value = $('[data-js="year"]').get().value.replace(/\D/g, '');
+            
           });
          
           $('[data-js="plate"]').get().addEventListener('blur', function(){
             var regexPlate = /[a-zA-Z]{3}-[\d]{4}$/g;
                if(!regexPlate.test($('[data-js="plate"]').get().value)){
-                 alert('insira uma placa válida');
+                $('[data-js="form-register"]').get().classList.add('was-validated');
+                return false;
                }
+               return true;
           });
 
         }
