@@ -37,22 +37,11 @@
            $tr.appendChild($tdColor); 
            $tr.appendChild($tdRemove); 
 
-          $fragment.appendChild($tr);
-          
-          //cógido de outro projeto
-          function removeCar(line){
-            return function (){
-              if($tr.parentNode){
-                $tr.parentNode.removeChild( $tr );
-              }
-       }
-       }
-          if($tr){ $tdRemove.addEventListener('click', removeCar) };
-
+          return $fragment.appendChild($tr);
           },
           initEvents: function initEvents(){
         //  this.formValidation();
-
+            this.removeCar();
         $('[data-js="form-register"]').on( 'submit', this.handleSubmit );
             
             
@@ -63,7 +52,7 @@
             
             var $tableCar = $('[data-js="table-car"]').get();
             $tableCar.appendChild(app.createNewCar());
-            app.removeCar();
+            //app.removeCar();
 
           },
           companyInfo: function companyInfo() {
@@ -90,6 +79,13 @@
 
         isReady: function isReady(){
           return this.readyState === 4 && this.status === 200;
+        },
+        removeCar: function removeCar(){
+            var $removeTd = $('[data-js="remove-car"]');
+
+            $removeTd.on('click', function(){
+              console.log('carro removido')
+            })
         }
         /*,
         formValidation: function formValidation(){
