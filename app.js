@@ -1,14 +1,14 @@
 (function ($) {
     'use strict';
-   
+
     var app = (function appController() {
        return {
          init: function init() {
            this.companyInfo();
            this.initEvents();
-                    
-         }, 
-          createNewCar: function createNewCar() {    
+
+         },
+          createNewCar: function createNewCar() {
           var $fragment = document.createDocumentFragment();
           var $tr = document.createElement('tr');
           var $tdImage = document.createElement('td');
@@ -18,11 +18,11 @@
           var $tdPlate = document.createElement('td');
           var $tdColor = document.createElement('td');
           var $tdRemove = document.createElement('td');
-          
+
           $image.setAttribute('src', $('[data-js="image"]').get().value);
           $tdImage.appendChild($image);
 
-     
+
           $tdBrand.textContent = $('[data-js="brand-model"]').get().value;
           $tdYear.textContent = $('[data-js="year"]').get().value;
           $tdPlate.textContent = $('[data-js="plate"]').get().value;
@@ -30,46 +30,45 @@
           $tdRemove.setAttribute('data-js','remove-car');
           $tdRemove.insertAdjacentHTML("afterbegin", '<i class="fas fa-trash-alt" style=\' cursor: pointer; \' ></i>');
 
-           $tr.appendChild($tdImage); 
-           $tr.appendChild($tdBrand); 
-           $tr.appendChild($tdYear); 
-           $tr.appendChild($tdPlate); 
-           $tr.appendChild($tdColor); 
-           $tr.appendChild($tdRemove); 
+           $tr.appendChild($tdImage);
+           $tr.appendChild($tdBrand);
+           $tr.appendChild($tdYear);
+           $tr.appendChild($tdPlate);
+           $tr.appendChild($tdColor);
+           $tr.appendChild($tdRemove);
 
           return $fragment.appendChild($tr);
           },
           initEvents: function initEvents(){
         //  this.formValidation();
-            this.removeCar();
         $('[data-js="form-register"]').on( 'submit', this.handleSubmit );
-            
-            
+
+
           },
           handleSubmit: function handleSubmit(e){
             e.preventDefault();
-            
-            
+
+
             var $tableCar = $('[data-js="table-car"]').get();
             $tableCar.appendChild(app.createNewCar());
-            //app.removeCar();
+            app.removeCar();
 
           },
           companyInfo: function companyInfo() {
-            
+
             var ajax = new XMLHttpRequest();
             ajax.open('GET', 'company.json', true);
             ajax.send();
-            
+
             ajax.addEventListener('readystatechange', this.getCompanyInfo);
-            
+
           },
-          
+
           getCompanyInfo: function getCompanyInfo() {
             if (app.isReady.call(this))
             return;
-            
-            
+
+
           var data = JSON.parse(this.responseText);
           var $companyName = $('[data-js="company-name"]');
           var $companyPhone = $('[data-js="company-phone"]');
@@ -82,24 +81,25 @@
         },
         removeCar: function removeCar(){
             var $removeTd = $('[data-js="remove-car"]');
+			var $tr = $removeTd.parentNode;
 
             $removeTd.on('click', function(){
-              console.log('carro removido')
-            })
+				this.parentNode.remove(this.parentNode);
+            });
         }
         /*,
         formValidation: function formValidation(){
 
           //  if (form.checkValidity() === false) {
-                  
+
           //       }
-                
+
 
           $('[data-js="year"]').get().addEventListener('input', function(e){
             $('[data-js="year"]').get().value = $('[data-js="year"]').get().value.replace(/\D/g, '');
-            
+
           });
-         
+
           $('[data-js="plate"]').get().addEventListener('blur', function(){
             var regexPlate = /[a-zA-Z]{3}-[\d]{4}$/g;
                if(!regexPlate.test($('[data-js="plate"]').get().value)){
@@ -111,13 +111,13 @@
 
         }*/
 
- 
 
-      
+
+
 
     };
   })();
   app.init();
-  
+
 
 })(window.DOM);
