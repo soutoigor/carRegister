@@ -5,11 +5,13 @@
        return {
          init: function init() {
            this.companyInfo();
+           this.listCars();
            this.initEvents();
 
          },
           createNewCar: function createNewCar() {
           var $fragment = document.createDocumentFragment();
+          var $urlImage = $('[data-js="image"]').get().value;
           var $tr = document.createElement('tr');
           var $tdImage = document.createElement('td');
           var $image = document.createElement('img');
@@ -19,7 +21,7 @@
           var $tdColor = document.createElement('td');
           var $tdRemove = document.createElement('td');
 
-          $image.setAttribute('src', $('[data-js="image"]').get().value);
+          $image.setAttribute('src', $urlImage);
           $tdImage.appendChild($image);
 
 
@@ -37,11 +39,13 @@
            $tr.appendChild($tdColor);
            $tr.appendChild($tdRemove);
 
+           this.saveNewCar($urlImage, $tdBrand.textContent, $tdYear.textContent, $tdPlate.textContent, $tdColor.textContent);
+
           return $fragment.appendChild($tr);
           },
           initEvents: function initEvents(){
         //  this.formValidation();
-        $('[data-js="form-register"]').on( 'submit', this.handleSubmit );
+          $('[data-js="form-register"]').on( 'submit', this.handleSubmit );
 
 
           },
@@ -65,15 +69,14 @@
           },
 
           getCompanyInfo: function getCompanyInfo() {
-            if (app.isReady.call(this))
-            return;
+            if (app.isReady.call(this)){
+              var data = JSON.parse(this.responseText);
+              var $companyName = $('[data-js="company-name"]');
+              var $companyPhone = $('[data-js="company-phone"]');
+              $companyName.get().textContent = data.name;
+              $companyPhone.get().textContent = data.phone;
+            }
 
-
-          var data = JSON.parse(this.responseText);
-          var $companyName = $('[data-js="company-name"]');
-          var $companyPhone = $('[data-js="company-phone"]');
-          $companyName.get().textContent = data.name;
-          $companyPhone.get().textContent = data.phone;
         },
 
         isReady: function isReady(){
@@ -81,11 +84,62 @@
         },
         removeCar: function removeCar(){
             var $removeTd = $('[data-js="remove-car"]');
-			var $tr = $removeTd.parentNode;
-
+			
             $removeTd.on('click', function(){
-				this.parentNode.remove(this.parentNode);
+				      this.parentNode.remove(this.parentNode);
             });
+        },
+        listCars: function listCars(){
+          var get = new XMLHttpRequest();
+          get.open('GET', 'http://localhost:3000/car');
+          get.send();
+
+          get.addEventListener('readystatechange', function(){
+
+            if (app.isReady.call(this)){
+              var cars = JSON.parse(get.responseText);
+              
+              cars.forEach(function(car) {
+                console.log(car);
+              });
+             
+            }
+            
+           
+
+          });
+          
+        },
+        saveNewCar: function saveNewCar(image, brand, year, plate, color){
+          var save = new XMLHttpRequest();
+          save.open('POST', 'http://localhost:3000/car');
+          save.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          save.send(`image=${image}&brandModel=${brand}&year=${year}&plate=${plate}&color=${color}`);
+
+          save.addEventListener('readystatechange', function(){
+            if (app.isReady.call(this)){
+              var feedbackMessage = JSON.parse(save.responseText);
+              app.showFeedbackMessage(feedbackMessage.message, feedbackMessage.success);
+              app.listCars();
+            }
+          });
+        },
+        showFeedbackMessage: function feedbackMessage(message, hasSuccess){
+          var $alertMessage = $('[data-js="feedback-message"]');
+          $alertMessage.get().style='display: block;'
+          if(hasSuccess){
+            $alertMessage.get().classList.add('alert-success');
+            $alertMessage.get().classList.remove('alert-danger');
+          }
+          if(!hasSuccess){
+            $alertMessage.get().classList.add('alert-danger');
+            $alertMessage.get().classList.remove('alert-success');
+        }
+          $alertMessage.get().textContent = message;
+
+          setTimeout(function(){
+            $alertMessage.get().style='display: none;';
+          }, 2500);
         }
         /*,
         formValidation: function formValidation(){
