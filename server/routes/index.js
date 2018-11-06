@@ -28,4 +28,11 @@ if(hasCar){
 }
 });
 
+router.delete('/', function(req, res) {
+  data = data.filter(function(car) {
+    return car.plate !== req.body.plate;
+  });
+  res.json({ message: 'success' });
+});
+
 module.exports = router;

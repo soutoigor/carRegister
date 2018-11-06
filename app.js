@@ -55,7 +55,7 @@
 
             var $tableCar = $('[data-js="table-car"]').get();
             $tableCar.appendChild(app.createNewCar());
-            app.removeCar();
+            app.removeCarRow();
 
           },
           companyInfo: function companyInfo() {
@@ -82,12 +82,25 @@
         isReady: function isReady(){
           return this.readyState === 4 && this.status === 200;
         },
-        removeCar: function removeCar(){
+        removeCarRow: function removeCarRow(){
             var $removeTd = $('[data-js="remove-car"]');
 			
             $removeTd.on('click', function(){
-				      this.parentNode.remove(this.parentNode);
+              this.parentNode.remove(this.parentNode);
+              app.deleteCar(this.parentNode.childNodes[3].textContent);  
             });
+        },
+        deleteCar: function deleteCar(plate){
+          var ajax = new XMLHttpRequest();
+          ajax.open('DELETE', 'http://localhost:3000/car');
+          ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          ajax.send(`plate=${plate}`);
+
+          ajax.addEventListener('readystatechange', function(){
+            if (app.isReady.call(this)){              
+              app.listCars();
+            }
+          });
         },
         listCars: function listCars(){
           var get = new XMLHttpRequest();
@@ -98,7 +111,7 @@
 
             if (app.isReady.call(this)){
               var cars = JSON.parse(get.responseText);
-              
+              console.log('-----------------')
               cars.forEach(function(car) {
                 console.log(car);
               });
@@ -167,6 +180,7 @@
 
 
 
+       
 
 
     };
