@@ -10,35 +10,7 @@
 
       },
       createNewCar: function createNewCar() {
-        /*  var $fragment = document.createDocumentFragment();
-          var $tr = document.createElement('tr');
-          var $tdImage = document.createElement('td');
-          var $image = document.createElement('img');
-          var $tdBrand = document.createElement('td');
-          var $tdYear = document.createElement('td');
-          var $tdPlate = document.createElement('td');
-          var $tdColor = document.createElement('td');
-          var $tdRemove = document.createElement('td');
-
-          $image.setAttribute('src', $urlImage);
-          $tdImage.appendChild($image);
-
-
-          $tdBrand.textContent = $('[data-js="brand-model"]').get().value;
-          $tdYear.textContent = $('[data-js="year"]').get().value;
-          $tdPlate.textContent = $('[data-js="plate"]').get().value;
-          $tdColor.textContent = $('[data-js="color"]').get().value;
-          $tdRemove.setAttribute('data-js','remove-car');
-          $tdRemove.insertAdjacentHTML("afterbegin", '<i class="fas fa-trash-alt" style=\' cursor: pointer; \' ></i>');
-
-           $tr.appendChild($tdImage);
-           $tr.appendChild($tdBrand);
-           $tr.appendChild($tdYear);
-           $tr.appendChild($tdPlate);
-           $tr.appendChild($tdColor);
-           $tr.appendChild($tdRemove);
-            */
-
+        
         var $urlImage = $('[data-js="image"]').get().value;
         var $tdBrand = $('[data-js="brand-model"]').get().value;
         var $tdYear = $('[data-js="year"]').get().value;
@@ -60,8 +32,6 @@
         app.createNewCar();
         app.listCars();
         
-        //$tableCar.appendChild(app.createNewCar());
-
       },
       companyInfo: function companyInfo() {
 
@@ -93,9 +63,7 @@
           console.log(this.parentNode.parentNode.childNodes[3]);
           console.log('Erase button was clicked!');
           this.parentNode.remove(this.parentNode);
-          // ACHAR O CONTEUDO DA PLACA
-          app.deleteCar(this.parentNode.parentNode.childNodes[3].textContent);
-          
+          app.deleteCar(this.parentNode.childNodes[3].textContent);        
         });
       },
       deleteCar: function deleteCar(plate) {
@@ -113,8 +81,8 @@
       listCars: function listCars() {
         app.clearTable();
         var $tableCar = $('[data-js="table-car"]').get();
-
         var get = new XMLHttpRequest();
+        
         get.open('GET', 'http://localhost:3000/car');
         get.send();
 
@@ -131,15 +99,30 @@
               console.log(car.color);
 
               var $tr = document.createElement('tr');
+              var $tdImage = document.createElement('td');
+              var $image = document.createElement('img');
+              var $tdBrand = document.createElement('td');
+              var $tdYear = document.createElement('td');
+              var $tdPlate = document.createElement('td');
+              var $tdColor = document.createElement('td');
+              var $tdRemove = document.createElement('td');
 
-              $tr.innerHTML = `
-                <td><img src="${car.image}"</td>
-                <td>${car.brandModel}</td>
-                <td>${car.year}</td>
-                <td>${car.plate}</td>
-                <td>${car.color}</td>
-                <td><i class="fas fa-trash-alt" data-js="remove-car" style=\' cursor: pointer; \' ></i></td>
-               `;
+          $image.setAttribute('src', car.image);
+          $tdImage.appendChild($image);
+          
+          $tdBrand.textContent = car.brandModel;
+          $tdYear.textContent = car.year;
+          $tdPlate.textContent = car.plate;
+          $tdColor.textContent = car.color;
+          $tdRemove.setAttribute('data-js','remove-car');
+          $tdRemove.insertAdjacentHTML("afterbegin", '<i class="fas fa-trash-alt" style=\' cursor: pointer; \' ></i>');
+
+           $tr.appendChild($tdImage);
+           $tr.appendChild($tdBrand);
+           $tr.appendChild($tdYear);
+           $tr.appendChild($tdPlate);
+           $tr.appendChild($tdColor);
+           $tr.appendChild($tdRemove);
 
               $tableCar.appendChild($tr);
             });
